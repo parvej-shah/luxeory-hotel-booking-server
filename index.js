@@ -45,13 +45,13 @@ async function run() {
     app.post("/bookings", async (req, res) => {
       console.log("booking your room")
       const newBooking = req.body;
-      /* const filter = {_id:new ObjectId(newBooking.roomId)};
+      const filter = {_id:new ObjectId(newBooking.roomId)};
       const updateDoc = {
         $set: {
           available: false
         },
       };
-      const result1 = await roomsCollection.updateOne(filter, updateDoc); */
+      const result1 = await roomsCollection.updateOne(filter, updateDoc);
       console.log(filter);
       const result = await bookingsCollection.insertOne(newBooking);
       res.send(result);
