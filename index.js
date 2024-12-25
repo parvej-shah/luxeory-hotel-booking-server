@@ -179,6 +179,22 @@ async function run() {
       const result = await reviewsCollection.insertOne(newReview);
       res.send(result);
     });
+    app.get("/reviews", async (req, res) => {
+      const roomId  = req.query.roomId;
+      let filter;
+      if(roomId){
+        filter ={roomId}
+      }
+      else{
+        filter = {};
+      }
+      const sortField = "timestamp"; 
+      const result = await reviewsCollection
+        .find(filter)
+        .sort({ [sortField]: -1 })
+        .toArray();
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     /* await client.close(); */
