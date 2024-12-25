@@ -32,8 +32,13 @@ async function run() {
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
     app.get('/rooms',async (req,res)=>{
-      const cursor = roomsCollection.find();
-      const result = await cursor.toArray();
+      const { sortBy } = req.query; // Get sorting criteria from query parameters
+
+      // Default sorting values
+      const sortField = sortBy || 'reviewCount'; // Default field to sort by
+      // const sortOrder = order === 'desc' ? -1 : 1; // Default order is ascending
+
+      const result= await roomsCollection.find().sort({ [sortField]: -1 }).toArray();
       res.send(result);
     })
     app.get("/rooms/:id", async (req, res) => {
