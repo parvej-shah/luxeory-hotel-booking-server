@@ -53,6 +53,7 @@ async function run() {
     // Send a ping to confirm a successful connection
     const roomsCollection = client.db("hotelDB").collection("rooms");
     const bookingsCollection = client.db("hotelDB").collection("bookings");
+    const reviewsCollection = client.db("hotelDB").collection("reviews");
     await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
@@ -163,6 +164,19 @@ async function run() {
       const result1 = await roomsCollection.updateOne(filter2, updatedDoc);
       const query = { _id: new ObjectId(id) };
       const result = await bookingsCollection.deleteOne(query);
+      res.send(result);
+    });
+    app.post("/reviews", async (req, res) => {
+      console.log("reviewing your room");
+      const newReview = req.body;
+      const filter = { _id: new ObjectId(newReview.roomId) };
+      const updateDoc = {
+        $inc: {
+          reviewCount: 1,
+        },
+      };
+      const result1 = await roomsCollection.updateOne(filter, updateDoc);
+      const result = await reviewsCollection.insertOne(newReview);
       res.send(result);
     });
   } finally {
