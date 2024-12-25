@@ -66,10 +66,30 @@ async function run() {
         if(data){
           result.thumbnail = data.thumbnail;
           result.price = data.price;
-          result.title = data.roomTitle;
+          result.roomTitle = data.roomTitle;
         }
       }
       res.send(results);
+    });
+    app.patch('/bookings/:id',async(req,res)=>{
+      const id = req.params.id;
+      const date = req.body.newDate;
+      const roomId = req.body.roomId;
+      const filter2 = {_id:new ObjectId(roomId)};
+      const updatedDoc = {
+        $set: {
+          available: false
+        },
+      }
+      const result1 = await roomsCollection.updateOne(filter2,updatedDoc);
+      const filter = {_id:new ObjectId(id)};
+      const updatedDate = {
+        $set: {
+          bookingDate: date
+        },
+      }
+      const result = await bookingsCollection.updateOne(filter,updatedDate);
+      res.send(result);
     });
   } finally {
     // Ensures that the client will close when you finish/error
