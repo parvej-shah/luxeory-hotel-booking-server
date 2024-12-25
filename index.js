@@ -103,7 +103,6 @@ async function run() {
       res.send(result);
     });
     app.post("/bookings", async (req, res) => {
-      console.log("booking your room");
       const newBooking = req.body;
       const filter = { _id: new ObjectId(newBooking.roomId) };
       const updateDoc = {
@@ -118,7 +117,6 @@ async function run() {
     app.get("/bookings/:email",verifyToken, async (req, res) => {
       const email = req.params.email;
       const query = { email };
-      console.log(email);
       const results = await bookingsCollection.find(query).toArray();
       for (const result of results) {
         const filter = { _id: new ObjectId(result.roomId) };
@@ -154,7 +152,6 @@ async function run() {
     app.delete("/bookings/:id", async (req, res) => {
       const id = req.params.id;
       const { roomId } = req.query;
-      console.log({ id, roomId });
       const filter2 = { _id: new ObjectId(roomId) };
       const updatedDoc = {
         $set: {
@@ -167,7 +164,6 @@ async function run() {
       res.send(result);
     });
     app.post("/reviews", async (req, res) => {
-      console.log("reviewing your room");
       const newReview = req.body;
       const filter = { _id: new ObjectId(newReview.roomId) };
       const updateDoc = {
