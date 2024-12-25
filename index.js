@@ -91,6 +91,21 @@ async function run() {
       const result = await bookingsCollection.updateOne(filter,updatedDate);
       res.send(result);
     });
+    app.delete("/bookings/:id", async (req, res) => {
+      const id = req.params.id;
+      const{roomId} = req.query;
+      console.log({id,roomId})
+      const filter2 = {_id:new ObjectId(roomId)};
+      const updatedDoc = {
+        $set: {
+          available: true
+        },
+      }
+      const result1 = await roomsCollection.updateOne(filter2,updatedDoc);
+      const query = { _id: new ObjectId(id) };
+      const result = await bookingsCollection.deleteOne(query);
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     /* await client.close(); */
