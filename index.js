@@ -52,9 +52,24 @@ async function run() {
         },
       };
       const result1 = await roomsCollection.updateOne(filter, updateDoc);
-      console.log(filter);
       const result = await bookingsCollection.insertOne(newBooking);
       res.send(result);
+    });
+    app.get("/bookings/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = {email};
+      console.log(email);
+      const results = await bookingsCollection.find(query).toArray();
+      for(const result of results){
+        const filter = {_id:new ObjectId(result.roomId)};
+        const data = await roomsCollection.findOne(filter)
+        if(data){
+          result.thumbnail = data.thumbnail;
+          result.price = data.price;
+          result.title = data.roomTitle;
+        }
+      }
+      res.send(results);
     });
   } finally {
     // Ensures that the client will close when you finish/error
