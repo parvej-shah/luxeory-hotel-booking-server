@@ -13,8 +13,8 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://job-portal-504b7.web.app",
-      "https://job-portal-504b7.firebaseapp.com",
+      "https://luxeory-96d49.web.app",
+      "https://luxeory-96d49.firebaseapp.com",
     ],
     credentials: true,
   })
@@ -54,7 +54,7 @@ async function run() {
     const roomsCollection = client.db("hotelDB").collection("rooms");
     const bookingsCollection = client.db("hotelDB").collection("bookings");
     const reviewsCollection = client.db("hotelDB").collection("reviews");
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
